@@ -4,3 +4,10 @@
 .xmonad/xmonad-x86_64-linux
 .xmonad/xmonad.errors
 .xmonad/xmonad.state
+
+*.elc
+*.dat
+.emacs.d/auto-save-list/
+.emacs.d/backups/
+.emacs.d/eshell/
+.emacs.d/tramp
