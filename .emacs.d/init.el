@@ -133,6 +133,14 @@
 (put 'downcase-region 'disabled nil)
 (put 'upcase-region 'disabled nil)
 (setq uniquify-buffer-name-style 'post-forward)
+(defun display-ansi-colors ()
+  (interactive)
+  (let ((inhibit-read-only t))
+        (ansi-color-apply-on-region (point-min) (point-max))))
+(defun font-lock-comment-annotations ()
+  (font-lock-add-keywords
+   nil '(("\\<\\(FIX\\(ME\\)?\\|TODO\\|OPTIMIZE\\|HACK\\|REFACTOR\\):"
+          1 "Green" t))))
 
 ;; notmuch
 (setq notmuch-hello-thousands-separator ",")
@@ -156,7 +164,12 @@
                 (cond
                  ;; I use email address as account label in ~/.msmtprc
                  ((string-match "rharwood@redhat.com" from)
-                  "rharwood@redhat.com"))))
+                  "rharwood@redhat.com")))
+                 ((string-match "rharwood@club.cc.cmu.edu" from)
+                  "rharwood@club.cc.cmu.edu")
+                 ((string-match "rharwood@bu.edu" from)
+                  "rharwood@bu.edu")
+                 )
           (setq message-sendmail-extra-arguments (list '"-a" account))))))
 (setq message-sendmail-envelope-from 'header)
 (add-hook 'message-send-mail-hook 'cg-feed-msmtp)
