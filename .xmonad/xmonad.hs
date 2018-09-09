@@ -101,6 +101,7 @@ keymap conf@XConfig {XMonad.modMask = modm} = let
     , ("<XF86AudioLowerVolume>", spawn "amixer set Master 3%-")
     , ("<XF86AudioRaiseVolume>", spawn "amixer set Master 3%+")
     , ("<XF86WebCam>", spawn "mplayer -vf mirror tv://")
+    , ("<XF86ScreenSaver>", spawn "xscreensaver-command --lock")
 
     -- T540p bindings
     , ("<XF86Search>", mpc "pause")
