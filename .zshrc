@@ -44,6 +44,9 @@ precmd() {
 
         cmd_timestamp='invalid'
     fi
+
+    # trigger an alert
+    printf "\a"
 }
 
 # welcome to my nightmare
@@ -57,26 +60,16 @@ PROMPT+="%{$fg_bold[blue]%}%~%{$reset_color%}" # path
 #PROMPT+="\$(am_git && echo ' <'\$(git status | head -n1 | awk '{print \$NF}')'>')"
 PROMPT+="%(!.#.%\\\\$) " # this is just for the dollar sign
 
-function g {
-    if (am_git); then
-        git grep -iI "$@"
-    else
-        grep -ir --binary-files=without-match "$@"
-    fi
+function y {
+    youtube-dl -f 'bestvideo[height<=1080][width<=1920]+bestaudio/best' "$@"
 }
-function f {
-    if (am_git); then
-        git grep -l '' -- \*"${@}"\*
-    else
-        find . -name \*"${@}"\*
-    fi
+function ya {
+    youtube-dl -x -f 'vorbis/best[asr=44100]/best' "$@"
 }
 
-# piece of trash won't stop matching if I make it an alias
-# I prefer: video @ 1080/30, audio @ 44.1; try higher audio on fallback
-# This won't necessarily give me vorbis, but hey.
-function y {
-    youtube-dl -f 'bestvideo[fps<=?30][height<=?1080][width<=?1920]+bestaudio[asr=44100]/bestvideo[fps<=?30][height<=?1080][width<=?1920]+bestaudio/best' $@
+function u {
+    urxvtcd
+    fg 2>/dev/null || true
 }
 
 alias grep="grep --color=auto"
@@ -88,13 +81,12 @@ alias la="ls -AhN"
 alias l="ls -CFhN"
 alias l1="ls -1N"
 alias lr="ls -R"
-alias al="sl -aN"
+alias al="sl -a"
 alias p=proxychains
 alias t=torify
 alias e="emacsclient -nw -a emacs" # because it hates you that's why
 alias a="aptitude"
-alias u="urxvtcd"
-alias i="firefox --new-window"
+alias i="firefox-esr --new-window"
 alias mv="mv -iv"
 alias cp="cp -iv"
 alias rm="rm -iv --one-file-system"
@@ -104,9 +96,35 @@ alias gf="echo 'Your gf is Kit and that is wonderful.  Let me hit fg for you:' ;
 alias into="ssh"
 alias dquilt="quilt --quiltrc=${HOME}/.quiltrc-dpkg"
 alias man="man --nj"
-alias m="mplayer -softvol -softvol-max 1000 -cache-min 1"
 
-alias vpn="sudo openvpn --config /etc/openvpn/client/rdu2 --daemon"
+alias vpn="tmux new-session sudo openvpn --config /etc/openvpn/client/rdu2"
+alias weechat="mosh -a ihatethat"
+alias w="mosh -a ihatethat"
+
+alias n="emacsclient -nw -e '(notmuch)'"
+
+function c {
+    chromium --enable-remote-extensions $@ &
+    disown
+}
+
+function g {
+    if (am_git); then
+        git grep -I "$@"
+    else
+        grep -r --binary-files=without-match "$@"
+    fi
+}
+function f {
+    if (am_git); then
+        git grep -l '' -- \*"${@}"\*
+    else
+        find . -name \*"${@}"\*
+    fi
+}
+function ef {
+    e $(f $@)
+}
 
 setopt COMPLETE_ALIASES
 
@@ -129,6 +147,10 @@ alias help=run-help
 
 eval "$(thefuck --alias)"
 
+if [ x$TERM == x"mlterm" ]; then
+    TERM="mlterm-256color"
+fi
+
 # must be last otherwise problems
 ZSH_HIGHLIGHT_HIGHLIGHTERS=(main brackets pattern)
 source /usr/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
@@ -141,4 +163,5 @@ export MPD_HOST=/run/mpd/socket
 export DEBEMAIL="Robbie Harwood (frozencemetery) <rharwood@club.cc.cmu.edu>"
 
 export GTK_OVERLAY_SCROLLING=0
+
 export QT_STYLE_OVERRIDE=gtk2
