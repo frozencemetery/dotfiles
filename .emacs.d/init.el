@@ -164,12 +164,12 @@
                 (cond
                  ;; I use email address as account label in ~/.msmtprc
                  ((string-match "rharwood@redhat.com" from)
-                  "rharwood@redhat.com")))
+                  "rharwood@redhat.com")
                  ((string-match "rharwood@club.cc.cmu.edu" from)
                   "rharwood@club.cc.cmu.edu")
                  ((string-match "rharwood@bu.edu" from)
                   "rharwood@bu.edu")
-                 )
+                 )))
           (setq message-sendmail-extra-arguments (list '"-a" account))))))
 (setq message-sendmail-envelope-from 'header)
 (add-hook 'message-send-mail-hook 'cg-feed-msmtp)
