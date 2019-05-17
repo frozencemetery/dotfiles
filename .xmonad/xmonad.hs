@@ -1,16 +1,18 @@
+import Data.Maybe
 import System.IO
 
 import XMonad
 import XMonad.Hooks.DynamicLog
 import XMonad.Hooks.ManageDocks
-import XMonad.Util.Run(spawnPipe)
-import XMonad.Layout.NoBorders
+import XMonad.Hooks.UrgencyHook
+import XMonad.Layout.MultiColumns
 import XMonad.Layout.MultiToggle
 import XMonad.Layout.MultiToggle.Instances
-import XMonad.Layout.MultiColumns
+import XMonad.Layout.NoBorders
 import XMonad.Layout.PerWorkspace
-import XMonad.Hooks.UrgencyHook
 import XMonad.Util.EZConfig
+import XMonad.Util.Paste
+import XMonad.Util.Run(spawnPipe)
 
 import qualified Data.Map as M
 import qualified XMonad.StackSet as W
@@ -27,20 +29,29 @@ dmenu command prompt = let
   cfg = " -b -fn Terminus:size=8 -nb black -nf grey -sb orange -sf black -p "
   in spawn $ command ++ cfg ++ prompt
 
-ydl :: X ()
-ydl = let
-  fmtstr = "'bestvideo[height<=1080][width<=1920]+bestaudio/best'"
-  ytdl = "youtube-dl -f " ++ fmtstr ++ " -o - "
-  sink = " | mplayer - >/dev/null"
-  in spawn $ ytdl ++ "$(xsel -o)" ++ sink
-
 widthdelta = 3/100 :: Rational
-special = multiCol [1, 1] 0 widthdelta (1/3) :: MultiCol a
-regular = multiCol [1, 1, 1] 0 widthdelta (1/4) :: MultiCol a
+
+even_three = multiCol [1, 1] 0 widthdelta (1/3) :: MultiCol a
+four = multiCol [1, 1, 1] 0 widthdelta (1/4) :: MultiCol a
+-- half_double = multiCol [1, 1] 0 widthdelta (1/2)
+
 myLayouts = avoidStruts $ smartBorders $
             mkToggle (single FULL) . mkToggle (single MIRROR) $
-            onWorkspace "1" (special ||| regular) $
-            (regular ||| special)
+            onWorkspace "1" (even_three ||| four) $
+            (four ||| even_three)
+
+onFirefox :: X Bool
+onFirefox = withWindowSet (
+  \wset ->
+    let w_maybe = W.peek wset
+    in if isNothing w_maybe
+       then return False
+       else runQuery (className =? "Firefox") (fromJust w_maybe)
+  )
+
+ifFirefox :: (KeyMask, KeySym) -> (KeyMask, KeySym) -> X ()
+ifFirefox (fm, fs) (nm, ns) =
+  (onFirefox --> sendKey fm fs) >> ((fmap not onFirefox) --> sendKey nm ns)
 
 keymap :: XConfig Layout -> M.Map (KeyMask, KeySym) (X())
 keymap conf@XConfig {XMonad.modMask = modm} = let
@@ -61,6 +72,15 @@ keymap conf@XConfig {XMonad.modMask = modm} = let
     , ("M-q", spawn "pkill .mpdmonitor.sh; xmonad --restart")
     , ("M-b", sendMessage ToggleStruts)
     , ("M-r", refresh)
+
+    -- firefox is trash (and your favorite browser isn't better)
+    , ("C-s", ifFirefox (0,         xK_F3)     (controlMask, xK_s))
+    , ("C-r", ifFirefox (shiftMask, xK_F3)     (controlMask, xK_r))
+    , ("C-n", ifFirefox (0,         xK_Down)   (controlMask, xK_n))
+    , ("C-p", ifFirefox (0,         xK_Up)     (controlMask, xK_p))
+    , ("C-f", ifFirefox (0,         xK_Right)  (controlMask, xK_f))
+    , ("C-b", ifFirefox (0,         xK_Left)   (controlMask, xK_b))
+    , ("C-g", ifFirefox (0,         xK_Escape) (controlMask, xK_g))
 
     -- windows
     , ("M-n", windows W.focusDown)
@@ -86,7 +106,6 @@ keymap conf@XConfig {XMonad.modMask = modm} = let
     , ("M-S-x", spawn "gmrun")
     , ("M-x", dmenu "dmenu_run" "cmd: ")
     , ("M-u", spawn "dmenu-haskey")
-    , ("M-y", ydl)
     , ("M-S-/", spawnterm "less /usr/share/X11/locale/en_US.UTF-8/Compose")
     , ("M-w", spawnterm "emacsclient -nw $(mktemp)")
     , ("M-S-a", spawnterm "htop")
