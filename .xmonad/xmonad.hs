@@ -43,10 +43,9 @@ myLayouts = avoidStruts $ smartBorders $
 onFirefox :: X Bool
 onFirefox = withWindowSet (
   \wset ->
-    let w_maybe = W.peek wset
-    in if isNothing w_maybe
-       then return False
-       else runQuery (className =? "Firefox") (fromJust w_maybe)
+    case W.peek wset of
+      Nothing -> return False
+      Just w -> runQuery (className =? "Firefox") w
   )
 
 ifFirefox :: (KeyMask, KeySym) -> (KeyMask, KeySym) -> X ()
