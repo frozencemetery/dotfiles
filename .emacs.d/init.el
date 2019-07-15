@@ -220,6 +220,8 @@
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
  '(delete-active-region nil)
+ '(enable-local-variables t)
+ '(enable-remote-dir-locals t)
  '(flyspell-default-dictionary "american")
  '(haskell-indent-offset 2)
  '(haskell-indentation-starter-offset 2)
@@ -229,8 +231,8 @@
    (quote
     ((:name "inbox" :query "tag:inbox and not tag:rss")
      (:name "rss" :query "tag:inbox and tag:rss")
-     (:name "unread" :query "tag:unread and not tag:spam")
-     (:name "spam" :query "tag:spam and tag:unread"))))
+     (:name "unread" :query "tag:unread and not tag:maybe_spam")
+     (:name "maybe_spam" :query "tag:maybe_spam"))))
  '(notmuch-search-oldest-first nil)
  '(notmuch-search-result-format
    (quote
@@ -245,6 +247,7 @@
  '(nxml-child-indent 4)
  '(pydb-many-windows t)
  '(ruby-indent-level 4)
+ '(safe-local-variable-values (quote ((meson-indent-basic . 2))))
  '(vc-follow-symlinks nil)
  '(xref-prompt-for-identifier t))
 (custom-set-faces
