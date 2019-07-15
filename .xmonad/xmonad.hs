@@ -45,7 +45,7 @@ onFirefox = withWindowSet (
   \wset ->
     case W.peek wset of
       Nothing -> return False
-      Just w -> runQuery (className =? "Firefox") w
+      Just w -> runQuery (className =? "firefox") w
   )
 
 ifFirefox :: (KeyMask, KeySym) -> (KeyMask, KeySym) -> X ()
@@ -73,13 +73,16 @@ keymap conf@XConfig {XMonad.modMask = modm} = let
     , ("M-r", refresh)
 
     -- firefox is trash (and your favorite browser isn't better)
-    , ("C-s", ifFirefox (0,         xK_F3)     (controlMask, xK_s))
-    , ("C-r", ifFirefox (shiftMask, xK_F3)     (controlMask, xK_r))
-    , ("C-n", ifFirefox (0,         xK_Down)   (controlMask, xK_n))
-    , ("C-p", ifFirefox (0,         xK_Up)     (controlMask, xK_p))
-    , ("C-f", ifFirefox (0,         xK_Right)  (controlMask, xK_f))
-    , ("C-b", ifFirefox (0,         xK_Left)   (controlMask, xK_b))
-    , ("C-g", ifFirefox (0,         xK_Escape) (controlMask, xK_g))
+    , ("C-s", ifFirefox (0,           xK_F3)     (controlMask, xK_s))
+    , ("C-r", ifFirefox (shiftMask,   xK_F3)     (controlMask, xK_r))
+    , ("C-n", ifFirefox (0,           xK_Down)   (controlMask, xK_n))
+    , ("C-p", ifFirefox (0,           xK_Up)     (controlMask, xK_p))
+    , ("C-f", ifFirefox (0,           xK_Right)  (controlMask, xK_f))
+    , ("C-b", ifFirefox (0,           xK_Left)   (controlMask, xK_b))
+    , ("C-g", ifFirefox (0,           xK_Escape) (controlMask, xK_g))
+    , ("C-y", ifFirefox (controlMask, xK_v)      (controlMask, xK_y))
+    , ("M1-w", ifFirefox (controlMask, xK_c)      (mod1Mask,    xK_w))
+    , ("C-/", ifFirefox (controlMask, xK_z)      (controlMask, xK_slash))
 
     -- windows
     , ("M-n", windows W.focusDown)
@@ -195,19 +198,20 @@ manip = let
 main :: IO ()
 main = do
   xmproc <- spawnPipe "xmobar"
-  xmonad $ withUrgencyHook NoUrgencyHook def
-    { terminal = "urxvtcd"
-    , focusFollowsMouse = False
-    , borderWidth = 1
-    , modMask = mod4Mask
-    , workspaces = map show $ [1..9] ++ [0]
-    , normalBorderColor = "#000000"
-    , focusedBorderColor = "#ff7228"
-    , keys = keymap
-    , mouseBindings = mice
-    , layoutHook = myLayouts
-    , logHook = logger xmproc
-    , manageHook = manip
-    , handleEventHook = docksEventHook
-    , startupHook = spawnterm "zsh"
-    }
+  let xmconfig = withUrgencyHook NoUrgencyHook def
+        { terminal = "urxvtcd"
+        , focusFollowsMouse = False
+        , borderWidth = 1
+        , modMask = mod4Mask
+        , workspaces = map show $ [1..9] ++ [0]
+        , normalBorderColor = "#000000"
+        , focusedBorderColor = "#ff7228"
+        , keys = keymap
+        , mouseBindings = mice
+        , layoutHook = myLayouts
+        , logHook = logger xmproc
+        , manageHook = manip
+        , handleEventHook = docksEventHook
+        , startupHook = spawnterm "zsh"
+        }
+  xmonad $ xmconfig
