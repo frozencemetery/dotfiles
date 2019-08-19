@@ -45,7 +45,7 @@ onFirefox = withWindowSet (
   \wset ->
     case W.peek wset of
       Nothing -> return False
-      Just w -> runQuery (className =? "firefox") w
+      Just w -> runQuery (className =? "Firefox") w
   )
 
 ifFirefox :: (KeyMask, KeySym) -> (KeyMask, KeySym) -> X ()
