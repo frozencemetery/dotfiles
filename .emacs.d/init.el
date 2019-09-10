@@ -16,6 +16,9 @@
 (require 'auto-complete)
 (require 'notmuch)
 (require 'uniquify)
+(require 'elpy)
+
+(elpy-enable)
 
 ;; MODE ALIST ;;
 (add-to-list 'auto-mode-alist '("\\.S$" . asm-mode))
@@ -91,7 +94,7 @@
   (if (region-active-p)
       (progn (shell-command-on-region (region-beginning)
                                       (region-end)
-                                      "xsel -i")
+                                      "xsel -i -b")
              (message "Yanked region to clipboard!")
              (deactivate-mark))
     (message "No region active; can't yank to clipboard!")))
@@ -118,7 +121,6 @@
 (setq text-mode-hook 'turn-on-auto-fill)
 (setq require-final-newline t)
 (setq info-mode-hook 'visual-mode)
-(setq auto-save-interval 1024)
 (setq line-move-visual 'nil)
 (setq track-eol 1)
 (setq backup-directory-alist (quote ((".*" . "~/.emacs.d/backups/"))))
@@ -220,6 +222,9 @@
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
  '(delete-active-region nil)
+ '(elpy-modules
+   (quote
+    (elpy-module-company elpy-module-eldoc elpy-module-highlight-indentation elpy-module-yasnippet elpy-module-django elpy-module-autodoc elpy-module-sane-defaults)))
  '(enable-local-variables t)
  '(enable-remote-dir-locals t)
  '(flyspell-default-dictionary "american")
