@@ -50,11 +50,11 @@ URxvt.perl-ext-common: matcher,font-size,selection-to-clipboard,vtwheel
 URxvt.url-launcher: /usr/bin/firefox
 ! URxvt.matcher.button: 3
 ! URxvt.keysym.C-Delete:  perl:matcher:last
-URxvt.keysym.C-M-f:  perl:matcher:list
+URxvt.keysym.Mod4-e:  perl:matcher:list
 URxvt.keysym.C-Up:     perl:font-size:increase
 URxvt.keysym.C-Down:   perl:font-size:decrease
 
 URxvt*modifier: mod1
 
-! don't need the perl interpreter
+! do not need the perl interpreter
 URxvt.keysym.Meta-s: s
