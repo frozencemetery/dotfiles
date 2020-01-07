@@ -7,8 +7,6 @@
 ;; LOADING ;;
 (add-to-list 'load-path "~/.emacs.d/lisp")
 (require 'tramp)
-(require 'popup) ; for magit
-(require 'magit)
 (require 'mml2015) ; notmuch
 (require 'asm-mode)
 (require 'rfcview)
