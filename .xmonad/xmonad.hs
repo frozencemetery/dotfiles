@@ -109,7 +109,7 @@ keymap conf@XConfig {XMonad.modMask = modm} = let
     , ("M-<Return>", spawnterm "emacsclient -nw -a emacs")
     , ("M-S-x", spawn "gmrun")
     , ("M-x", dmenu "dmenu_run" "cmd: ")
-    , ("M-u", spawn "dmenu-haskey")
+    , ("M-u", spawn "idcpass x")
     , ("M-S-/", spawnterm "less /usr/share/X11/locale/en_US.UTF-8/Compose")
     , ("M-w", spawnterm "emacsclient -nw $(mktemp)")
     , ("M-S-a", spawnterm "htop")
@@ -199,7 +199,8 @@ manip = let
 
 main :: IO ()
 main = do
-  xmproc <- spawnPipe "xmobar"
+  xmproc0 <- spawnPipe "xmobar -x 0"
+  xmproc1 <- spawnPipe "xmobar -x 1"
   let xmconfig = withUrgencyHook NoUrgencyHook def
         { terminal = "urxvtcd"
         , focusFollowsMouse = False
@@ -211,7 +212,7 @@ main = do
         , keys = keymap
         , mouseBindings = mice
         , layoutHook = myLayouts
-        , logHook = logger xmproc
+        , logHook = logger xmproc0 >> logger xmproc1
         , manageHook = manip
         , handleEventHook = docksEventHook
         , startupHook = spawnterm "zsh"
