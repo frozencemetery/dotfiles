@@ -123,21 +123,16 @@ keymap conf@XConfig {XMonad.modMask = modm} = let
     , ("S-<XF86AudioNext>", mpc "clear")
     , ("<XF86AudioLowerVolume>", spawn "amixer set Master 3%-")
     , ("<XF86AudioRaiseVolume>", spawn "amixer set Master 3%+")
-    , ("<XF86WebCam>", spawn "mplayer -vf mirror tv://")
     , ("<XF86ScreenSaver>", spawn "xscreensaver-command --lock")
+    , ("<Pause>", spawn "xscreensaver-command --lock")
 
-    -- T540p bindings
+    -- T460s bindings
     , ("<XF86Search>", mpc "pause")
     , ("<XF86LaunchA>", spawnterm "alsamixer")
     , ("<XF86Explorer>", mpc "play")
     , ("S-<XF86Search>", mpc "prev")
     , ("S-<XF86LaunchA>", spawnterm "ncmpcpp")
     , ("S-<XF86Explorer>", mpc "clear")
-
-    -- Amazon keyboard bindings
-    , ("<XF86AudioStop>", mpc "pause")
-    , ("S-<XF86AudioStop>", mpc "prev")
-    , ("<XF86Calculator>", spawn "xscreensaver-command --lock")
 
     -- Apple Extended II bindings
     , ("C-<F2>", spawn "amixer set Master 3%-")
@@ -148,7 +143,6 @@ keymap conf@XConfig {XMonad.modMask = modm} = let
     , ("C-S-<F10>", mpc "prev")
     , ("C-S-<F11>", spawnterm "ncmpcpp")
     , ("C-S-<F12>", mpc "clear")
-    , ("<Pause>", spawn "xscreensaver-command --lock")
     ]
   in (mkKeymap conf keyconf) `M.union` (M.fromList wspacekeys)
 
