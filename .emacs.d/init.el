@@ -19,13 +19,11 @@
 (elpy-enable)
 
 ;; MODE ALIST ;;
-(add-to-list 'auto-mode-alist '("\\.S$" . asm-mode))
 (add-to-list 'auto-mode-alist '("\\.md\\'" . markdown-mode))
 (add-to-list 'auto-mode-alist '("\\.pyx\\'" . python-mode)) ; cython
 (add-to-list 'auto-mode-alist '("\\.pxd\\'" . python-mode)) ; cython
-(add-to-list 'auto-mode-alist '(".bash_aliases$" . sh-mode))
-(add-to-list 'auto-mode-alist '("\\.org$" . org-mode))
-(add-to-list 'auto-mode-alist '("rfc" . rfcview-mode))
+(add-to-list 'auto-mode-alist '(".bash_aliases\\'" . sh-mode))
+(add-to-list 'auto-mode-alist '("rfc" . rfcview-mode) t)
 
 ;; AC
 (ac-config-default)
