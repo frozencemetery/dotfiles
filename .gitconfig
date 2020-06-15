@@ -1,0 +1,30 @@
+[user]
+	name = Robbie Harwood
+	email = rharwood@redhat.com
+	signingkey = 2532F9176A95A442
+
+[color]
+	status = true
+	branch = true
+	interactive = true
+	diff = true
+	ui = true
+
+[push]
+	default = simple
+
+[gitreview]
+	username = frozencemetery
+
+[tag]
+	sort=version:refname
+
+[diff]
+	algorithm=histogram
+	
+[gc]
+	auto = 0
+	reflogExpire = never
+
+[pull]
+	rebase = true
