@@ -254,7 +254,8 @@
  '(ruby-indent-level 4)
  '(safe-local-variable-values (quote ((meson-indent-basic . 2))))
  '(vc-follow-symlinks nil)
- '(xref-prompt-for-identifier t))
+ '(xref-prompt-for-identifier t)
+ '(yaml-indent-offset 4))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
