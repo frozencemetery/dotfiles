@@ -29,17 +29,18 @@ dmenu command prompt = let
   cfg = " -b -fn Terminus:size=8 -nb black -nf grey -sb orange -sf black -p "
   in spawn $ command ++ cfg ++ prompt
 
+-- Layouts are designed for a 1080p screen.  With 8-point terminus, I can get
+-- four terminals across at 79 characters each, or three terminals across at
+-- 104 each.
 widthdelta = 3/100 :: Rational
-
 even_three = multiCol [1, 1] 0 widthdelta (1/3) :: MultiCol a
 four = multiCol [1, 1, 1] 0 widthdelta (1/4) :: MultiCol a
--- half_double = multiCol [1, 1] 0 widthdelta (1/2)
-
 myLayouts = avoidStruts $ smartBorders $
             mkToggle (single FULL) . mkToggle (single MIRROR) $
             onWorkspace "1" (even_three ||| four) $
             (four ||| even_three)
 
+-- Rebind some keys because firefox is too uppity to support that.
 onFirefox :: X Bool
 onFirefox = withWindowSet (
   \wset ->
@@ -68,41 +69,41 @@ keymap conf@XConfig {XMonad.modMask = modm} = let
     ]
   keyconf =
     [ ("M-S-c", kill)
-    , ("M-q", spawn "pkill .mpdmonitor.sh; xmonad --restart")
-    , ("M-b", sendMessage ToggleStruts)
-    , ("M-r", refresh)
+    , ("M-q",   spawn "pkill .mpdmonitor.sh; xmonad --restart")
+    , ("M-b",   sendMessage ToggleStruts)
+    , ("M-r",   refresh)
 
-    -- firefox is trash (and your favorite browser isn't better)
-    , ("C-s",  ifFirefox (0,           xK_F3)        (controlMask, xK_s))
-    , ("C-r",  ifFirefox (shiftMask,   xK_F3)        (controlMask, xK_r))
-    , ("C-n",  ifFirefox (0,           xK_Down)      (controlMask, xK_n))
-    , ("C-p",  ifFirefox (0,           xK_Up)        (controlMask, xK_p))
-    , ("C-f",  ifFirefox (0,           xK_Right)     (controlMask, xK_f))
-    , ("C-b",  ifFirefox (0,           xK_Left)      (controlMask, xK_b))
-    , ("C-g",  ifFirefox (0,           xK_Escape)    (controlMask, xK_g))
-    , ("C-y",  ifFirefox (controlMask, xK_v)         (controlMask, xK_y))
-    , ("M1-w", ifFirefox (controlMask, xK_c)         (mod1Mask,    xK_w))
-    , ("C-/",  ifFirefox (controlMask, xK_z)         (controlMask, xK_slash))
-    , ("C-v",  ifFirefox (0,           xK_Page_Down) (controlMask, xK_v))
-    , ("M1-v", ifFirefox (0,           xK_Page_Up)   (mod1Mask,    xK_v))
+    -- firefox is trash (see above)
+    , ("C-s",  ifFirefox (0, xK_F3)          (controlMask, xK_s))
+    , ("C-r",  ifFirefox (shiftMask, xK_F3)  (controlMask, xK_r))
+    , ("C-n",  ifFirefox (0, xK_Down)        (controlMask, xK_n))
+    , ("C-p",  ifFirefox (0, xK_Up)          (controlMask, xK_p))
+    , ("C-f",  ifFirefox (0, xK_Right)       (controlMask, xK_f))
+    , ("C-b",  ifFirefox (0, xK_Left)        (controlMask, xK_b))
+    , ("C-g",  ifFirefox (0, xK_Escape)      (controlMask, xK_g))
+    , ("C-y",  ifFirefox (controlMask, xK_v) (controlMask, xK_y))
+    , ("M1-w", ifFirefox (controlMask, xK_c) (mod1Mask, xK_w))
+    , ("C-/",  ifFirefox (controlMask, xK_z) (controlMask, xK_slash))
+    , ("C-v",  ifFirefox (0, xK_Page_Down)   (controlMask, xK_v))
+    , ("M1-v", ifFirefox (0, xK_Page_Up)     (mod1Mask,    xK_v))
 
     -- windows
-    , ("M-n", windows W.focusDown)
+    , ("M-n",   windows W.focusDown)
     , ("M-S-n", windows W.swapDown)
-    , ("M-p", windows W.focusUp)
+    , ("M-p",   windows W.focusUp)
     , ("M-S-p", windows W.swapUp)
-    , ("M-h", sendMessage Shrink)
-    , ("M-l", sendMessage Expand)
-    , ("M-m", windows W.focusMaster)
+    , ("M-h",   sendMessage Shrink)
+    , ("M-l",   sendMessage Expand)
+    , ("M-m",   windows W.focusMaster)
 
     -- layouts
-    , ("M-,", sendMessage $ IncMasterN 1)
-    , ("M-.", sendMessage $ IncMasterN $ -1)
-    , ("M-<Space>", sendMessage NextLayout)
+    , ("M-,",         sendMessage $ IncMasterN 1)
+    , ("M-.",         sendMessage $ IncMasterN $ -1)
+    , ("M-<Space>",   sendMessage NextLayout)
     , ("M-S-<Space>", setLayout $ XMonad.layoutHook conf)
-    , ("M-f", sendMessage $ Toggle FULL)
-    , ("M-a", sendMessage $ Toggle MIRROR)
-    , ("M-t", withFocused $ windows . W.sink)
+    , ("M-f",         sendMessage $ Toggle FULL)
+    , ("M-a",         sendMessage $ Toggle MIRROR)
+    , ("M-t",         withFocused $ windows . W.sink)
 
     -- spawn all the things
     , ("M-S-<Return>", spawn $ terminal conf)
@@ -115,31 +116,33 @@ keymap conf@XConfig {XMonad.modMask = modm} = let
     , ("M-S-a", spawnterm "htop")
 
     -- "regular" bindings
-    , ("<XF86AudioPrev>", mpc "pause")
-    , ("<XF86AudioPlay>", spawnterm "alsamixer")
-    , ("<XF86AudioNext>", mpc "play")
-    , ("S-<XF86AudioPrev>", mpc "prev")
-    , ("S-<XF86AudioPlay>", spawnterm "ncmpcpp")
-    , ("S-<XF86AudioNext>", mpc "clear")
+    , ("<XF86AudioPrev>",        mpc "pause")
+    , ("<XF86AudioPlay>",        spawnterm "alsamixer")
+    , ("<XF86AudioNext>",        mpc "play")
+    , ("S-<XF86AudioPrev>",      mpc "prev")
+    , ("S-<XF86AudioPlay>",      spawnterm "ncmpcpp")
+    , ("S-<XF86AudioNext>",      mpc "clear")
     , ("<XF86AudioLowerVolume>", spawn "amixer set Master 3%-")
     , ("<XF86AudioRaiseVolume>", spawn "amixer set Master 3%+")
-    , ("<XF86ScreenSaver>", spawn "xscreensaver-command --lock")
-    , ("<Pause>", spawn "xscreensaver-command --lock")
+    , ("<XF86ScreenSaver>",      spawn "xscreensaver-command --lock")
+    , ("<Pause>",                spawn "xscreensaver-command --lock")
 
-    -- T460s bindings
-    , ("<XF86Search>", mpc "pause")
-    , ("<XF86LaunchA>", spawnterm "alsamixer")
-    , ("<XF86Explorer>", mpc "play")
-    , ("S-<XF86Search>", mpc "prev")
-    , ("S-<XF86LaunchA>", spawnterm "ncmpcpp")
-    , ("S-<XF86Explorer>", mpc "clear")
+    -- P1 bindings.  I'm unsure why the function key on F11 doesn't come
+    -- through - it doesn't seem to change anything, but there's no X event
+    -- for it.
+    , ("<XF86Bluetooth>",   mpc "pause")
+--    , ("<XF86LaunchA>", spawnterm "alsamixer")
+    , ("<XF86Favorites>",   mpc "play")
+    , ("S-<XF86Bluetooth>", mpc "prev")
+--    , ("S-<XF86LaunchA>", spawnterm "ncmpcpp")
+    , ("S-<XF86Favorites>", mpc "clear")
 
     -- Apple Extended II bindings
-    , ("C-<F2>", spawn "amixer set Master 3%-")
-    , ("C-<F3>", spawn "amixer set Master 3%+")
-    , ("C-<F10>", mpc "pause")
-    , ("C-<F11>", spawnterm "alsamixer")
-    , ("C-<F12>", mpc "play")
+    , ("C-<F2>",    spawn "amixer set Master 3%-")
+    , ("C-<F3>",    spawn "amixer set Master 3%+")
+    , ("C-<F10>",   mpc "pause")
+    , ("C-<F11>",   spawnterm "alsamixer")
+    , ("C-<F12>",   mpc "play")
     , ("C-S-<F10>", mpc "prev")
     , ("C-S-<F11>", spawnterm "ncmpcpp")
     , ("C-S-<F12>", mpc "clear")
@@ -182,11 +185,7 @@ logger xmproc = let
 
 manip :: ManageHook
 manip = let
-  action = [ title =? "MPlayer" --> doFloat
-           , resource =? "Dialog" --> doFloat
-           , className =? "Qjackctl" --> doFloat
-           , className =? "Qjackctl.real" --> doFloat
-           , className =? "MPlayer" --> doFloat
+  action = [ resource =? "Dialog" --> doFloat
            , className =? "pinentry" --> doFloat
            ]
   in manageDocks <+> composeAll action
@@ -194,7 +193,6 @@ manip = let
 main :: IO ()
 main = do
   xmproc0 <- spawnPipe "xmobar -x 0"
-  xmproc1 <- spawnPipe "xmobar -x 1"
   let xmconfig = withUrgencyHook NoUrgencyHook def
         { terminal = "urxvtcd"
         , focusFollowsMouse = False
@@ -206,7 +204,7 @@ main = do
         , keys = keymap
         , mouseBindings = mice
         , layoutHook = myLayouts
-        , logHook = logger xmproc0 >> logger xmproc1
+        , logHook = logger xmproc0
         , manageHook = manip
         , handleEventHook = docksEventHook
         , startupHook = spawnterm "zsh"
