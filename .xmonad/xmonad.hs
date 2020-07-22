@@ -14,6 +14,8 @@ import XMonad.Util.EZConfig
 import XMonad.Util.Paste
 import XMonad.Util.Run(spawnPipe)
 
+import Graphics.X11.ExtraTypes.XF86
+
 import qualified Data.Map as M
 import qualified XMonad.StackSet as W
 import qualified XMonad.Util.Loggers as L
@@ -129,11 +131,11 @@ keymap conf@XConfig {XMonad.modMask = modm} = let
 
     -- P1 bindings.  I'm unsure why the function key on F11 doesn't come
     -- through - it doesn't seem to change anything, but there's no X event
-    -- for it.
-    , ("<XF86Bluetooth>",   mpc "pause")
+    -- for it.  See below for Bluetooth workaround.
+--    , ("<XF86Bluetooth>",   mpc "pause")
 --    , ("<XF86LaunchA>", spawnterm "alsamixer")
     , ("<XF86Favorites>",   mpc "play")
-    , ("S-<XF86Bluetooth>", mpc "prev")
+--    , ("S-<XF86Bluetooth>", mpc "prev")
 --    , ("S-<XF86LaunchA>", spawnterm "ncmpcpp")
     , ("S-<XF86Favorites>", mpc "clear")
 
@@ -147,7 +149,13 @@ keymap conf@XConfig {XMonad.modMask = modm} = let
     , ("C-S-<F11>", spawnterm "ncmpcpp")
     , ("C-S-<F12>", mpc "clear")
     ]
-  in (mkKeymap conf keyconf) `M.union` (M.fromList wspacekeys)
+  -- EZConfig doesn't have all the XF86 keys.  Maybe I should stop using it?
+  -- https://github.com/xmonad/xmonad-contrib/pull/365
+  workaround = [ ((0, xF86XK_Bluetooth), mpc "pause")
+               , ((shiftMask, xF86XK_Bluetooth), mpc "prev")
+               ]
+  keylists = wspacekeys ++ workaround
+  in mkKeymap conf keyconf `M.union` M.fromList keylists
 
 mice :: XConfig l0 -> M.Map (KeyMask, Button) (Window -> X())
 mice XConfig {XMonad.modMask = modm} = let
