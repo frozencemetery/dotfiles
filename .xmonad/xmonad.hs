@@ -129,14 +129,17 @@ keymap conf@XConfig {XMonad.modMask = modm} = let
     , ("<XF86ScreenSaver>",      spawn "xscreensaver-command --lock")
     , ("<Pause>",                spawn "xscreensaver-command --lock")
 
-    -- P1 bindings.  I'm unsure why the function key on F11 doesn't come
-    -- through - it doesn't seem to change anything, but there's no X event
-    -- for it.  See below for Bluetooth workaround.
+    -- P1 bindings.  See below for Bluetooth workaround.  XF86Keyboard doesn't
+    -- pass through because it's value is greater than 255 so X can't handle
+    -- it.  There's an additional rule in /etc/udev/hwdb.d that tries to turn
+    -- it into playpause, and then magic in xmodmap to turn it into
+    -- XF87KAudioPlay.  Not worth the effort; get a different computer.
+--
 --    , ("<XF86Bluetooth>",   mpc "pause")
---    , ("<XF86LaunchA>", spawnterm "alsamixer")
+--    , ("<XF86Keyboard>", spawnterm "alsamixer")
     , ("<XF86Favorites>",   mpc "play")
 --    , ("S-<XF86Bluetooth>", mpc "prev")
---    , ("S-<XF86LaunchA>", spawnterm "ncmpcpp")
+--    , ("S-<XF86Keyboard>", spawnterm "ncmpcpp")
     , ("S-<XF86Favorites>", mpc "clear")
 
     -- Apple Extended II bindings
@@ -153,6 +156,8 @@ keymap conf@XConfig {XMonad.modMask = modm} = let
   -- https://github.com/xmonad/xmonad-contrib/pull/365
   workaround = [ ((0, xF86XK_Bluetooth), mpc "pause")
                , ((shiftMask, xF86XK_Bluetooth), mpc "prev")
+               , ((0, 0x1008ffb3), spawnterm "alsamixer")
+               , ((shiftMask, 0x1008ffb3), spawnterm "ncmpcpp")
                ]
   keylists = wspacekeys ++ workaround
   in mkKeymap conf keyconf `M.union` M.fromList keylists
