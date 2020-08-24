@@ -6,7 +6,11 @@ setopt appendhistory autocd beep hist_ignore_space notify
 unsetopt extendedglob nomatch
 bindkey -e
 
-zstyle :compinstall filename "~/.zshrc"
+# zsh really doesn't like this when sudoing, so...
+if [ $UID != 0 ]; then
+    fpath+=~/.zfunc
+    zstyle :compinstall filename "~/.zshrc"
+fi
 
 autoload -Uz compinit colors promptinit
 compinit
@@ -82,7 +86,7 @@ alias l="ls -CFhN"
 alias l1="ls -1N"
 alias lr="ls -R"
 alias al="sl -a"
-alias p=proxychains
+alias p=python3
 alias t=torify
 alias e="emacsclient -nw -a emacs" # because it hates you that's why
 alias a="aptitude"
@@ -91,11 +95,12 @@ alias mv="mv -iv"
 alias cp="cp -iv"
 alias rm="rm -iv --one-file-system"
 alias mkdir="mkdir -v"
-alias cd="cd --"
-alias gf="echo 'Your gf is Kit and that is wonderful.  Let me hit fg for you:' ; sleep 1; fg"
 alias into="ssh"
 alias dquilt="quilt --quiltrc=${HOME}/.quiltrc-dpkg"
 alias man="man --nj"
+alias nm="nice -n 19 make -sj12"
+alias m=mpv
+alias mq="mpv --quiet"
 
 alias vpn="tmux new-session sudo openvpn --config /etc/openvpn/client/rdu2"
 alias weechat="mosh -a ihatethat"
@@ -103,10 +108,7 @@ alias w="mosh -a ihatethat"
 
 alias n="emacsclient -nw -e '(notmuch)'"
 
-function c {
-    chromium --enable-remote-extensions $@ &
-    disown
-}
+alias eh="make_patches"
 
 function g {
     if (am_git); then
@@ -124,6 +126,10 @@ function f {
 }
 function ef {
     e $(f $@)
+}
+
+function sw {
+    cd $(sw.py)
 }
 
 setopt COMPLETE_ALIASES
@@ -157,7 +163,7 @@ source /usr/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
 
 export EDITOR="emacsclient -nw -a emacs"
 
-export PATH="/usr/lib/ccache:/usr/local/sbin:/usr/sbin:/sbin:${PATH}"
+export PATH="$HOME/bin:$HOME/.cargo/bin:$HOME/eh:/usr/lib/ccache:/usr/local/sbin:/usr/sbin:/sbin:${PATH}"
 export MPD_HOST=/run/mpd/socket
 
 export DEBEMAIL="Robbie Harwood (frozencemetery) <rharwood@club.cc.cmu.edu>"
@@ -165,3 +171,8 @@ export DEBEMAIL="Robbie Harwood (frozencemetery) <rharwood@club.cc.cmu.edu>"
 export GTK_OVERLAY_SCROLLING=0
 
 export QT_STYLE_OVERRIDE=gtk2
+
+if [ x$TERM == xlinux -a ! -f /tmp/x-attempted ]; then
+    touch /tmp/x-attempted
+    exec startx
+fi
