@@ -71,7 +71,8 @@ keymap conf@XConfig {XMonad.modMask = modm} = let
     ]
   keyconf =
     [ ("M-S-c", kill)
-    , ("M-q",   spawn "pkill .mpdmonitor.sh; xmonad --restart")
+    , ("M-q",   spawn $ "pkill .mpdmonitor.sh; pkill .alsamonitor.py; " ++
+        "pkill alsactl; xmonad --restart")
     , ("M-b",   sendMessage ToggleStruts)
     , ("M-r",   refresh)
 
@@ -129,17 +130,18 @@ keymap conf@XConfig {XMonad.modMask = modm} = let
     , ("<XF86ScreenSaver>",      spawn "xscreensaver-command --lock")
     , ("<Pause>",                spawn "xscreensaver-command --lock")
 
-    -- P1 bindings.  See below for Bluetooth workaround.  XF86Keyboard doesn't
-    -- pass through because it's value is greater than 255 so X can't handle
-    -- it.  There's an additional rule in /etc/udev/hwdb.d that tries to turn
-    -- it into playpause, and then magic in xmodmap to turn it into
-    -- XF87KAudioPlay.  Not worth the effort; get a different computer.
---
+    -- P1 bindings.  See below for Bluetooth workaround.  XF86Keyboard
+    -- (Fn-F11) doesn't pass through because it's value is greater than 255 so
+    -- X can't handle it.  I've spent too much time trying to make it work:
+    -- it's not worth the effort, get a different computer.  XF86Tools is Fn-F9.
+
 --    , ("<XF86Bluetooth>",   mpc "pause")
 --    , ("<XF86Keyboard>", spawnterm "alsamixer")
+    , ("<XF86Tools>", spawnterm "alsamixer")
     , ("<XF86Favorites>",   mpc "play")
 --    , ("S-<XF86Bluetooth>", mpc "prev")
 --    , ("S-<XF86Keyboard>", spawnterm "ncmpcpp")
+    , ("S-<XF86Tools>", spawnterm "ncmpcpp")
     , ("S-<XF86Favorites>", mpc "clear")
 
     -- Apple Extended II bindings
