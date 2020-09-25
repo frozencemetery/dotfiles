@@ -127,6 +127,11 @@ function f {
 function ef {
     e $(f $@)
 }
+function ea {
+    ls "$@" | while read f; do
+        e $f
+    done
+}
 
 function sw {
     cd $(sw.py)
@@ -174,5 +179,5 @@ export QT_STYLE_OVERRIDE=gtk2
 
 if [ x$TERM == xlinux -a ! -f /tmp/x-attempted ]; then
     touch /tmp/x-attempted
-    exec startx
+    exec startx > .xserver.log 2>&1
 fi
