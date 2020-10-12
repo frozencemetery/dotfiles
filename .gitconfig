@@ -28,3 +28,6 @@
 
 [pull]
 	rebase = true
+
+[worktree]
+	guessRemote = true
