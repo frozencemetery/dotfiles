@@ -1,0 +1,11 @@
+keycode 64 = Alt_L Meta_L Alt_L Meta_L
+keycode 108 = Alt_R Meta_R Alt_R Meta_R
+keycode 133 = Super_L NoSymbol Super_L
+keycode 134 = Super_R NoSymbol Super_R
+
+clear mod1
+clear mod4
+
+add mod1 = Alt_L Meta_L Alt_R Meta_R
+add mod4 = Super_L Hyper_L Super_R Hyper_R
+add mod4 = Print

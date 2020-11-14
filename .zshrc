@@ -108,7 +108,11 @@ alias w="mosh -a ihatethat"
 
 alias n="emacsclient -nw -e '(notmuch)'"
 
-alias eh="make_patches"
+function eh {
+    source ~/.venv/bin/activate
+    make_patches "$@"
+    deactivate
+}
 
 function g {
     if (am_git); then
@@ -129,6 +133,11 @@ function ef {
 }
 function ea {
     ls "$@" | while read f; do
+        e $f
+    done
+}
+function eg {
+    g -l "$@" | while read f; do
         e $f
     done
 }
@@ -161,6 +170,8 @@ eval "$(thefuck --alias)"
 if [ x$TERM == x"mlterm" ]; then
     TERM="mlterm-256color"
 fi
+
+# source /usr/share/zsh-autosuggestions/zsh-autosuggestions.zsh
 
 # must be last otherwise problems
 ZSH_HIGHLIGHT_HIGHLIGHTERS=(main brackets pattern)

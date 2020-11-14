@@ -9,7 +9,7 @@ URxvt*scrollTtyOutput: false
 URxvt*font: xft:Terminus:size=8
 URxvt*boldFont: xft:Terminus:size=8
 URxvt*italicFont: xft:Terminus:size=8
-URxvt*letterSpace: 0;
+URxvt*letterSpace: 0
 
 ! Zenburn-ish
 URxvt*background: #000000

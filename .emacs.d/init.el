@@ -169,8 +169,6 @@
                   "rharwood@redhat.com")
                  ((string-match "rharwood@club.cc.cmu.edu" from)
                   "rharwood@club.cc.cmu.edu")
-                 ((string-match "rharwood@bu.edu" from)
-                  "rharwood@bu.edu")
                  )))
           (setq message-sendmail-extra-arguments (list '"-a" account))))))
 (setq message-sendmail-envelope-from 'header)
@@ -231,13 +229,17 @@
  '(haskell-indent-offset 2)
  '(haskell-indentation-starter-offset 2)
  '(meson-indent-basic 4)
- '(mm-text-html-renderer (quote w3m-standalone))
+ '(mm-text-html-renderer (quote w3m))
  '(notmuch-saved-searches
    (quote
-    ((:name "inbox" :query "tag:inbox and not tag:rss")
-     (:name "rss" :query "tag:inbox and tag:rss")
-     (:name "unread" :query "tag:unread and not tag:maybe_spam")
-     (:name "maybe_spam" :query "tag:maybe_spam"))))
+    ((:name "maybe_spam" :query "tag:maybe_spam")
+     (:name "inbox" :query "tag:inbox")
+     (:name "idm" :query "tag:unread and tag:idm")
+     (:name "bugzilla" :query "tag:unread and tag:bugzilla")
+     (:name "kitten" :query "tag:unread and tag:kitten")
+     (:name "krb5" :query "tag:unread and (tag:krb5 tag:krbdev) and not tag:bugzilla")
+     (:name "github" :query "tag:unread and tag:github and not (tag:krb5 tag:kitten)")
+     (:name "everything else" :query "tag:unread and not (tag:maybe_spam tag:inbox tag:idm tag:bugzilla tag:kitten tag:krb5 tag:krbdev tag:github)"))))
  '(notmuch-search-oldest-first nil)
  '(notmuch-search-result-format
    (quote
