@@ -1,3 +1,5 @@
+!Use this to reset after disconnecting an Apple keyboard
+
 keycode 64 = Alt_L Meta_L Alt_L Meta_L
 keycode 108 = Alt_R Meta_R Alt_R Meta_R
 keycode 133 = Super_L NoSymbol Super_L
