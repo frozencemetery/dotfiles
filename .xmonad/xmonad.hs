@@ -71,7 +71,7 @@ keymap conf@XConfig {XMonad.modMask = modm} = let
     ]
   keyconf =
     [ ("M-S-c", kill)
-    , ("M-q",   spawn $ "pkill .mpdmonitor.sh; pkill .alsamonitor.py; " ++
+    , ("M-q",   spawn $ "pkill .mpdmonitor.py; pkill .alsamonitor.py; " ++
         "pkill alsactl; xmonad --restart")
     , ("M-b",   sendMessage ToggleStruts)
     , ("M-r",   refresh)

@@ -221,40 +221,37 @@
  ;; If there is more than one, they won't work right.
  '(delete-active-region nil)
  '(elpy-modules
-   (quote
-    (elpy-module-company elpy-module-eldoc elpy-module-highlight-indentation elpy-module-yasnippet elpy-module-django elpy-module-autodoc elpy-module-sane-defaults)))
+   '(elpy-module-company elpy-module-eldoc elpy-module-highlight-indentation elpy-module-yasnippet elpy-module-django elpy-module-autodoc elpy-module-sane-defaults))
  '(enable-local-variables t)
  '(enable-remote-dir-locals t)
  '(flyspell-default-dictionary "american")
  '(haskell-indent-offset 2)
  '(haskell-indentation-starter-offset 2)
  '(meson-indent-basic 4)
- '(mm-text-html-renderer (quote w3m))
+ '(mm-text-html-renderer 'w3m)
+ '(mml-secure-openpgp-sign-with-sender t)
  '(notmuch-saved-searches
-   (quote
-    ((:name "maybe_spam" :query "tag:maybe_spam")
+   '((:name "maybe_spam" :query "tag:maybe_spam")
      (:name "inbox" :query "tag:inbox")
      (:name "idm" :query "tag:unread and tag:idm")
      (:name "bugzilla" :query "tag:unread and tag:bugzilla")
      (:name "kitten" :query "tag:unread and tag:kitten")
      (:name "krb5" :query "tag:unread and (tag:krb5 tag:krbdev) and not tag:bugzilla")
      (:name "github" :query "tag:unread and tag:github and not (tag:krb5 tag:kitten)")
-     (:name "everything else" :query "tag:unread and not (tag:maybe_spam tag:inbox tag:idm tag:bugzilla tag:kitten tag:krb5 tag:krbdev tag:github)"))))
+     (:name "everything else" :query "tag:unread and not (tag:maybe_spam tag:inbox tag:idm tag:bugzilla tag:kitten tag:krb5 tag:krbdev tag:github)")))
  '(notmuch-search-oldest-first nil)
  '(notmuch-search-result-format
-   (quote
-    (("date" . "%12s ")
+   '(("date" . "%12s ")
      ("count" . "%-7s ")
      ("authors" . "%-20s ")
      ("tags" . "[%s] ")
-     ("subject" . "%s "))))
+     ("subject" . "%s ")))
  '(notmuch-show-insert-text/plain-hook
-   (quote
-    (notmuch-wash-convert-inline-patch-to-part notmuch-wash-wrap-long-lines notmuch-wash-tidy-citations notmuch-wash-elide-blank-lines notmuch-wash-excerpt-citations)))
+   '(notmuch-wash-convert-inline-patch-to-part notmuch-wash-wrap-long-lines notmuch-wash-tidy-citations notmuch-wash-elide-blank-lines notmuch-wash-excerpt-citations))
  '(nxml-child-indent 4)
  '(pydb-many-windows t)
  '(ruby-indent-level 4)
- '(safe-local-variable-values (quote ((meson-indent-basic . 2))))
+ '(safe-local-variable-values '((meson-indent-basic . 2)))
  '(vc-follow-symlinks nil)
  '(xref-prompt-for-identifier t)
  '(yaml-indent-offset 4))

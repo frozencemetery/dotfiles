@@ -179,7 +179,7 @@ source /usr/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
 
 export EDITOR="emacsclient -nw -a emacs"
 
-export PATH="$HOME/bin:$HOME/.cargo/bin:$HOME/eh:/usr/lib/ccache:/usr/local/sbin:/usr/sbin:/sbin:${PATH}"
+export PATH="$HOME/bin:$HOME/.cargo/bin:$HOME/eh:/usr/lib/ccache:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin"
 export MPD_HOST=/run/mpd/socket
 
 export DEBEMAIL="Robbie Harwood (frozencemetery) <rharwood@club.cc.cmu.edu>"
