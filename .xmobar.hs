@@ -10,7 +10,7 @@ Config { font = "xft:Terminus:size=9"
                     , Run Date "%a %Y %b %d %R" "date" 10
                     , Run CommandReader "exec batterymonitor.py" "battery"
                     , Run StdinReader
-                    , Run CommandReader "exec mpdmonitor.sh xmobar" "MPD"
+                    , Run CommandReader "exec mpdmonitor.py" "MPD"
                     , Run CommandReader "exec alsamonitor.py" "alsa"
                     ]
        , sepChar = "%"
