@@ -214,6 +214,12 @@
   (xterm-register-default-colors xterm-standard-colors)
   (tty-set-up-initial-frame-faces))
 
+;; Speaking of terminals, set the terminal title
+(defun xterm-title-update ()
+  (interactive)
+  (send-string-to-terminal (concat "\033]2;emacs: " (buffer-name) "\007")))
+(add-hook 'post-command-hook 'xterm-title-update)
+
 (custom-set-variables
  ;; custom-set-variables was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.

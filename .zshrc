@@ -51,6 +51,9 @@ precmd() {
 
     # trigger an alert
     printf "\a"
+
+    # set window title
+    printf "\033]2;urxvt: ${PWD}\007"
 }
 
 # welcome to my nightmare
