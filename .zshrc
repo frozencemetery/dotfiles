@@ -37,6 +37,9 @@ cmd_exec_time=0
 
 preexec() {
     cmd_timestamp=$EPOCHSECONDS
+
+    # set window title
+    printf "\033]2;$1\007"
 }
 
 precmd() {
@@ -53,7 +56,7 @@ precmd() {
     printf "\a"
 
     # set window title
-    printf "\033]2;urxvt: ${PWD}\007"
+    printf "\033]2;zsh: ${PWD}\007"
 }
 
 # welcome to my nightmare
