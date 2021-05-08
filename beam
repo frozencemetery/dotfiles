@@ -1,0 +1,43 @@
+#!/usr/bin/python3
+
+import subprocess
+import sys
+
+from typing import List, Tuple
+
+def cmd(c: str) -> List[str]:
+    return subprocess.getoutput(c).split("\n")
+
+def get_outputs() -> Tuple[List[str], List[str]]:
+    lines = [l.split(" ", 1)[0] for l in cmd("xrandr") if " connected" in l]
+    bigs = []
+    littles = []
+    for output in lines:
+        if output in ["eDP-1", "LVDS-1", "LVDS1", "eDP1"]:
+            littles.append(output)
+        else:
+            bigs.append(output)
+    return bigs, littles
+
+def beam(ons: List[str], offs: List[str]) -> None:
+    for on in ons:
+        cmd(f"xrandr --output {on} --auto")
+    for off in offs:
+        cmd(f"xrandr --output {off} --off")
+
+def main(argv: List[str]) -> None:
+    bigs, littles = get_outputs()
+    if len(sys.argv) > 1 and sys.argv[1] == "down":
+        beam(littles, bigs)
+    elif len(bigs) > 0:
+        beam(bigs, littles)
+    # Otherwise, make no changes to display state.
+
+    usbs = [l for l in cmd("lsusb") if "ADB Adapter" in l]
+    if len(usbs) > 0:
+        cmd("xmodmap ~/.Xmodmap.apple")
+    else:
+        cmd("xmodmap ~/.Xmodmap.std")
+
+if __name__ == "__main__":
+    main(sys.argv)
