@@ -118,51 +118,25 @@ keymap conf@XConfig {XMonad.modMask = modm} = let
     , ("M-w", spawnterm "emacsclient -nw $(mktemp)")
     , ("M-S-a", spawnterm "htop")
 
-    -- "regular" bindings
-    , ("<XF86AudioPrev>",        mpc "pause")
-    , ("<XF86AudioPlay>",        spawnterm "alsamixer")
-    , ("<XF86AudioNext>",        mpc "play")
-    , ("S-<XF86AudioPrev>",      mpc "prev")
-    , ("S-<XF86AudioPlay>",      spawnterm "ncmpcpp")
-    , ("S-<XF86AudioNext>",      mpc "clear")
+    -- audio bindings - use with mpdmonitor
+    , ("M-[",    mpc "pause")
+    , ("M-]",    mpc "play")
+    , ("M-\\",   spawnterm "alsamixer")
+    , ("M-S-[",  mpc "prev")
+    , ("M-S-]",  mpc "clear")
+    , ("M-S-\\", spawnterm "ncmpcpp")
+
+    -- Works with many keyboards.  On Thinkpads, Pause is often Fn-p.
     , ("<XF86AudioLowerVolume>", spawn "amixer set Master 3%-")
     , ("<XF86AudioRaiseVolume>", spawn "amixer set Master 3%+")
     , ("<XF86ScreenSaver>",      spawn "xscreensaver-command --lock")
     , ("<Pause>",                spawn "xscreensaver-command --lock")
 
-    -- P1 bindings.  See below for Bluetooth workaround.  XF86Keyboard
-    -- (Fn-F11) doesn't pass through because it's value is greater than 255 so
-    -- X can't handle it.  I've spent too much time trying to make it work:
-    -- it's not worth the effort, get a different computer.  XF86Tools is Fn-F9.
-
---    , ("<XF86Bluetooth>",   mpc "pause")
---    , ("<XF86Keyboard>", spawnterm "alsamixer")
-    , ("<XF86Tools>", spawnterm "alsamixer")
-    , ("<XF86Favorites>",   mpc "play")
---    , ("S-<XF86Bluetooth>", mpc "prev")
---    , ("S-<XF86Keyboard>", spawnterm "ncmpcpp")
-    , ("S-<XF86Tools>", spawnterm "ncmpcpp")
-    , ("S-<XF86Favorites>", mpc "clear")
-
-    -- Apple Extended II bindings
-    , ("C-<F2>",    spawn "amixer set Master 3%-")
-    , ("C-<F3>",    spawn "amixer set Master 3%+")
-    , ("C-<F10>",   mpc "pause")
-    , ("C-<F11>",   spawnterm "alsamixer")
-    , ("C-<F12>",   mpc "play")
-    , ("C-S-<F10>", mpc "prev")
-    , ("C-S-<F11>", spawnterm "ncmpcpp")
-    , ("C-S-<F12>", mpc "clear")
+    -- Apple Extended II, which has no Fn or multimedia keys
+    , ("C-<F2>", spawn "amixer set Master 3%-")
+    , ("C-<F3>", spawn "amixer set Master 3%+")
     ]
-  -- EZConfig doesn't have all the XF86 keys.  Maybe I should stop using it?
-  -- https://github.com/xmonad/xmonad-contrib/pull/365
-  workaround = [ ((0, xF86XK_Bluetooth), mpc "pause")
-               , ((shiftMask, xF86XK_Bluetooth), mpc "prev")
-               , ((0, 0x1008ffb3), spawnterm "alsamixer")
-               , ((shiftMask, 0x1008ffb3), spawnterm "ncmpcpp")
-               ]
-  keylists = wspacekeys ++ workaround
-  in mkKeymap conf keyconf `M.union` M.fromList keylists
+  in mkKeymap conf keyconf `M.union` M.fromList wspacekeys
 
 mice :: XConfig l0 -> M.Map (KeyMask, Button) (Window -> X())
 mice XConfig {XMonad.modMask = modm} = let
