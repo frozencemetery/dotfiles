@@ -1,4 +1,3 @@
-import Data.Maybe
 import System.IO
 
 import XMonad
@@ -12,13 +11,10 @@ import XMonad.Layout.NoBorders
 import XMonad.Layout.PerWorkspace
 import XMonad.Util.EZConfig
 import XMonad.Util.Paste
-import XMonad.Util.Run(spawnPipe)
+import XMonad.Util.Run
 
-import Graphics.X11.ExtraTypes.XF86
-
-import qualified Data.Map as M
+import qualified Data.Map as Map
 import qualified XMonad.StackSet as W
-import qualified XMonad.Util.Loggers as L
 
 spawnterm :: String -> X ()
 spawnterm c = spawn $ "urxvtcd -e " ++ c
@@ -55,7 +51,7 @@ ifFirefox :: (KeyMask, KeySym) -> (KeyMask, KeySym) -> X ()
 ifFirefox (fm, fs) (nm, ns) =
   (onFirefox --> sendKey fm fs) >> ((fmap not onFirefox) --> sendKey nm ns)
 
-keymap :: XConfig Layout -> M.Map (KeyMask, KeySym) (X())
+keymap :: XConfig Layout -> Map.Map (KeyMask, KeySym) (X())
 keymap conf@XConfig {XMonad.modMask = modm} = let
   ordered_keysyms = [xK_1 .. xK_9] ++ [xK_0]
   wspacekeys =
@@ -136,9 +132,9 @@ keymap conf@XConfig {XMonad.modMask = modm} = let
     , ("C-<F2>", spawn "amixer set Master 3%-")
     , ("C-<F3>", spawn "amixer set Master 3%+")
     ]
-  in mkKeymap conf keyconf `M.union` M.fromList wspacekeys
+  in mkKeymap conf keyconf `Map.union` Map.fromList wspacekeys
 
-mice :: XConfig l0 -> M.Map (KeyMask, Button) (Window -> X())
+mice :: XConfig l0 -> Map.Map (KeyMask, Button) (Window -> X())
 mice XConfig {XMonad.modMask = modm} = let
   move w = focus w >> mouseMoveWindow w >> windows W.shiftMaster
   resize w = focus w >> mouseResizeWindow w >> windows W.shiftMaster
@@ -147,7 +143,7 @@ mice XConfig {XMonad.modMask = modm} = let
             , ((modm, button2), resize)
             , ((modm, button3), master)
             ]
-  in M.fromList actions
+  in Map.fromList actions
 
 logger :: Handle -> X ()
 logger xmproc = let
