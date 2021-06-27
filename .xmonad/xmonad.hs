@@ -38,18 +38,19 @@ myLayouts = avoidStruts $ smartBorders $
             onWorkspace "1" (even_three ||| four) $
             (four ||| even_three)
 
--- Rebind some keys because firefox is too uppity to support that.
-onFirefox :: X Bool
-onFirefox = withWindowSet (
-  \wset ->
-    case W.peek wset of
-      Nothing -> return False
-      Just w -> runQuery (className =? "Firefox") w
-  )
-
-ifFirefox :: (KeyMask, KeySym) -> (KeyMask, KeySym) -> X ()
-ifFirefox (fm, fs) (nm, ns) =
-  (onFirefox --> sendKey fm fs) >> ((fmap not onFirefox) --> sendKey nm ns)
+-- Rebind some keys because firefox is too uppity to support that.  See
+-- "firefox" below for the bindings.
+fffix :: (KeyMask, KeySym, KeyMask, KeySym) -> ((KeyMask, KeySym), X())
+fffix (inm, ins, ffm, ffs) = let
+  onFirefox = withWindowSet (
+    \wset ->
+      case W.peek wset of
+        Nothing -> return False
+        Just w -> runQuery (className =? "Firefox") w
+    )
+  ffev = onFirefox --> sendKey ffm ffs
+  nfev = ((fmap not onFirefox) --> sendKey inm ins)
+  in ((inm, ins), ffev >> nfev)
 
 keymap :: XConfig Layout -> Map.Map (KeyMask, KeySym) (X())
 keymap conf@XConfig {XMonad.modMask = modm} = let
@@ -71,20 +72,6 @@ keymap conf@XConfig {XMonad.modMask = modm} = let
         "pkill alsactl; xmonad --restart")
     , ("M-b",   sendMessage ToggleStruts)
     , ("M-r",   refresh)
-
-    -- firefox is trash (see above)
-    , ("C-s",  ifFirefox (0, xK_F3)          (controlMask, xK_s))
-    , ("C-r",  ifFirefox (shiftMask, xK_F3)  (controlMask, xK_r))
-    , ("C-n",  ifFirefox (0, xK_Down)        (controlMask, xK_n))
-    , ("C-p",  ifFirefox (0, xK_Up)          (controlMask, xK_p))
-    , ("C-f",  ifFirefox (0, xK_Right)       (controlMask, xK_f))
-    , ("C-b",  ifFirefox (0, xK_Left)        (controlMask, xK_b))
-    , ("C-g",  ifFirefox (0, xK_Escape)      (controlMask, xK_g))
-    , ("C-y",  ifFirefox (controlMask, xK_v) (controlMask, xK_y))
-    , ("M1-w", ifFirefox (controlMask, xK_c) (mod1Mask, xK_w))
-    , ("C-/",  ifFirefox (controlMask, xK_z) (controlMask, xK_slash))
-    , ("C-v",  ifFirefox (0, xK_Page_Down)   (controlMask, xK_v))
-    , ("M1-v", ifFirefox (0, xK_Page_Up)     (mod1Mask,    xK_v))
 
     -- windows
     , ("M-n",   windows W.focusDown)
@@ -132,7 +119,27 @@ keymap conf@XConfig {XMonad.modMask = modm} = let
     , ("C-<F2>", spawn "amixer set Master 3%-")
     , ("C-<F3>", spawn "amixer set Master 3%+")
     ]
-  in mkKeymap conf keyconf `Map.union` Map.fromList wspacekeys
+
+  -- emacs/readline-like bindings
+  firefox = Map.fromList $ map fffix
+    [ (controlMask, xK_s,     0, xK_F3)
+    , (controlMask, xK_r,     shiftMask, xK_F3)
+    , (controlMask, xK_n,     0, xK_Down)
+    , (controlMask, xK_p,     0, xK_Up)
+    , (controlMask, xK_f,     0, xK_Right)
+    , (controlMask, xK_b,     0, xK_Left)
+    , (controlMask, xK_g,     0, xK_Escape)
+    , (controlMask, xK_y,     controlMask, xK_v)
+    , (mod1Mask, xK_w,        controlMask, xK_c)
+    , (controlMask, xK_slash, controlMask, xK_z)
+    , (controlMask, xK_v,     0, xK_Page_Down)
+    , (mod1Mask, xK_v,        0, xK_Page_Up)
+
+    -- These two work okay in firefox itself, but github et al. hijack them
+    , (controlMask, xK_a,     0, xK_Home)
+    , (controlMask, xK_e,     0, xK_End)
+    ]
+  in Map.unions [mkKeymap conf keyconf, Map.fromList wspacekeys, firefox]
 
 mice :: XConfig l0 -> Map.Map (KeyMask, Button) (Window -> X())
 mice XConfig {XMonad.modMask = modm} = let
