@@ -134,10 +134,6 @@ keymap conf@XConfig {XMonad.modMask = modm} = let
     , (controlMask, xK_slash, controlMask, xK_z)
     , (controlMask, xK_v,     0, xK_Page_Down)
     , (mod1Mask, xK_v,        0, xK_Page_Up)
-
-    -- These two work okay in firefox itself, but github et al. hijack them
-    , (controlMask, xK_a,     0, xK_Home)
-    , (controlMask, xK_e,     0, xK_End)
     ]
   in Map.unions [mkKeymap conf keyconf, Map.fromList wspacekeys, firefox]
 
