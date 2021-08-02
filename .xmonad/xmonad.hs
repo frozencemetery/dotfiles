@@ -108,6 +108,8 @@ keymap conf@XConfig {XMonad.modMask = modm} = let
     , ("M-S-[",  mpc "prev")
     , ("M-S-]",  mpc "clear")
     , ("M-S-\\", spawnterm "ncmpcpp")
+    , ("M-;",    spawn "amixer set Master 3%-")
+    , ("M-'",    spawn "amixer set Master 3%+")
 
     -- Works with many keyboards.  On Thinkpads, Pause is often Fn-p.
     , ("<XF86AudioLowerVolume>", spawn "amixer set Master 3%-")
