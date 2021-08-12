@@ -3,7 +3,7 @@ HISTFILE=~/.histfile
 HISTSIZE=100000000000
 SAVEHIST=10000000000
 setopt appendhistory autocd beep hist_ignore_space notify
-unsetopt extendedglob nomatch
+unsetopt extendedglob nomatch auto_remove_slash
 bindkey -e
 
 # zsh really doesn't like this when sudoing, so...
