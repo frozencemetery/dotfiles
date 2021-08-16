@@ -3,6 +3,7 @@ import System.IO
 import XMonad
 import XMonad.Hooks.DynamicLog
 import XMonad.Hooks.ManageDocks
+import XMonad.Hooks.ManageHelpers
 import XMonad.Hooks.UrgencyHook
 import XMonad.Layout.MultiColumns
 import XMonad.Layout.MultiToggle
@@ -177,6 +178,7 @@ manip :: ManageHook
 manip = let
   action = [ resource =? "Dialog" --> doFloat
            , className =? "pinentry" --> doFloat
+           , isDialog --> doFloat
            ]
   in manageDocks <+> composeAll action
 
