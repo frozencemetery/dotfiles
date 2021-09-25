@@ -34,8 +34,9 @@ dmenu command prompt = let
 widthdelta = 3/100 :: Rational
 even_three = multiCol [1, 1] 0 widthdelta (1/3) :: MultiCol a
 four = multiCol [1, 1, 1] 0 widthdelta (1/4) :: MultiCol a
-myLayouts = avoidStruts $ smartBorders $
-            mkToggle (single FULL) . mkToggle (single MIRROR) $
+myLayouts = avoidStruts $
+            mkToggle (single NBFULL) . mkToggle (single MIRROR) $
+            smartBorders $
             onWorkspace "1" (even_three ||| four) $
             (four ||| even_three)
 
@@ -50,7 +51,7 @@ fffix (inm, ins, ffm, ffs) = let
         Just w -> runQuery (className =? "Firefox") w
     )
   ffev = onFirefox --> sendKey ffm ffs
-  nfev = ((fmap not onFirefox) --> sendKey inm ins)
+  nfev = (fmap not onFirefox) --> sendKey inm ins
   in ((inm, ins), ffev >> nfev)
 
 keymap :: XConfig Layout -> Map.Map (KeyMask, KeySym) (X())
@@ -88,7 +89,7 @@ keymap conf@XConfig {XMonad.modMask = modm} = let
     , ("M-.",         sendMessage $ IncMasterN $ -1)
     , ("M-<Space>",   sendMessage NextLayout)
     , ("M-S-<Space>", setLayout $ XMonad.layoutHook conf)
-    , ("M-f",         sendMessage $ Toggle FULL)
+    , ("M-f",         sendMessage $ Toggle NBFULL)
     , ("M-a",         sendMessage $ Toggle MIRROR)
     , ("M-t",         withFocused $ windows . W.sink)
 
@@ -176,11 +177,10 @@ logger xmproc = let
 
 manip :: ManageHook
 manip = let
-  action = [ resource =? "Dialog" --> doFloat
-           , className =? "pinentry" --> doFloat
-           , isDialog --> doFloat
-           ]
-  in manageDocks <+> composeAll action
+  floats = map (--> doFloat) [ resource =? "Dialog"
+                             , className =? "pinentry"
+                             , isDialog]
+  in manageDocks <+> composeAll floats
 
 main :: IO ()
 main = do
