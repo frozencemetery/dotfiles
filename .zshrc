@@ -53,7 +53,7 @@ precmd() {
     fi
 
     # trigger an alert
-    printf "\a"
+#    printf "\a"
 
     # set window title
     printf "\033]2;zsh: ${PWD}\007"
@@ -71,10 +71,10 @@ PROMPT+="%{$fg_bold[blue]%}%~%{$reset_color%}" # path
 PROMPT+="%(!.#.%\\\\$) " # this is just for the dollar sign
 
 function y {
-    youtube-dl -f 'bestvideo[height<=1080][width<=1920]+bestaudio/best' "$@"
+    yt-dlp -f 'bestvideo[height<=1080][width<=1920]+bestaudio/best' "$@"
 }
 function ya {
-    youtube-dl -x -f 'vorbis/best[asr=44100]/best' "$@"
+    yt-dlp -x -f 'vorbis/best[asr=44100]/best' "$@"
 }
 
 function u {
@@ -104,15 +104,15 @@ alias mkdir="mkdir -v"
 alias into="ssh"
 alias dquilt="quilt --quiltrc=${HOME}/.quiltrc-dpkg"
 alias man="man --nj"
-alias nm="nice -n 19 make -sj12"
-alias m=mpv
-alias mq="mpv --quiet"
+alias n="nice -n 19 make -sj12"
+alias m="mpv --ao=alsa --volume-max=1000"
+alias mq="m --quiet"
 
 alias vpn="tmux new-session sudo openvpn --config /etc/openvpn/client/rdu2"
 alias weechat="mosh -a ihatethat"
 alias w="mosh -a ihatethat"
 
-alias n="emacsclient -nw -e '(notmuch)'"
+alias en="emacsclient -nw -e '(notmuch)'"
 
 function eh {
     source ~/.venv/bin/activate
@@ -193,6 +193,10 @@ export DEBEMAIL="Robbie Harwood (frozencemetery) <rharwood@club.cc.cmu.edu>"
 export GTK_OVERLAY_SCROLLING=0
 
 export QT_STYLE_OVERRIDE=gtk2
+
+# Java is terrible
+export _JAVA_AWT_WM_NONREPARENTING=1
+export AWT_TOOLKIT=MToolkit
 
 if [ x$TERM == xlinux -a ! -f /tmp/x-attempted ]; then
     touch /tmp/x-attempted
