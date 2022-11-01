@@ -134,6 +134,7 @@ keymap conf@XConfig {XMonad.modMask = modm} = let
     , (controlMask, xK_b,     0, xK_Left)
     , (controlMask, xK_g,     0, xK_Escape)
     , (controlMask, xK_y,     controlMask, xK_v)
+    , (controlMask, xK_a,     0, xK_Home)
     , (mod1Mask, xK_w,        controlMask, xK_c)
     , (controlMask, xK_slash, controlMask, xK_z)
     , (controlMask, xK_v,     0, xK_Page_Down)
