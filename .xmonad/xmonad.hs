@@ -116,8 +116,8 @@ keymap conf@XConfig {XMonad.modMask = modm} = let
     -- Works with many keyboards.  On Thinkpads, Pause is often Fn-p.
     , ("<XF86AudioLowerVolume>", spawn "amixer set Master 3%-")
     , ("<XF86AudioRaiseVolume>", spawn "amixer set Master 3%+")
-    , ("<XF86ScreenSaver>",      spawn "xset s activate")
-    , ("<Pause>",                spawn "xset s activate")
+    , ("<XF86ScreenSaver>",      spawn "slock xset dpms force off")
+    , ("<Pause>",                spawn "slock xset dpms force off")
 
     -- Apple Extended II, which has no Fn or multimedia keys
     , ("C-<F2>", spawn "amixer set Master 3%-")
