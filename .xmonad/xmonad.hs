@@ -200,7 +200,6 @@ main = do
         , layoutHook = myLayouts
         , logHook = logger xmproc0
         , manageHook = manip
-        , handleEventHook = docksEventHook
         , startupHook = spawnterm "zsh"
         }
-  xmonad $ xmconfig
+  xmonad $ docks $ xmconfig
