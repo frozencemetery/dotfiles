@@ -42,14 +42,15 @@ URxvt*shading: 25
 URxvt.iso14755: false
 URxvt.iso14755_52: false
 
+! emacs does stupid things with bracketed paste
+URxvt.disablePasteBrackets: true
+
 ! bell causes workspace to highlight
 URxvt*urgentOnBell: true
 URxvt*visualBell: true
 
 URxvt.perl-ext-common: matcher,font-size,selection-to-clipboard,vtwheel
 URxvt.url-launcher: /usr/bin/firefox
-! URxvt.matcher.button: 3
-! URxvt.keysym.C-Delete:  perl:matcher:last
 URxvt.keysym.Mod4-e:  perl:matcher:list
 URxvt.keysym.C-Up:     perl:font-size:increase
 URxvt.keysym.C-Down:   perl:font-size:decrease
