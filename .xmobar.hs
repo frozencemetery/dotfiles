@@ -1,6 +1,6 @@
 -- monitor scripts: https://github.com/frozencemetery/monitors
 
-Config { font = "xft:Terminus:size=9"
+Config { font = "Terminus 8"
        , bgColor = "black"
        , fgColor = "grey"
        , position = BottomW L 100
