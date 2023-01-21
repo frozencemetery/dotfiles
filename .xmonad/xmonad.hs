@@ -170,7 +170,7 @@ logger xmproc = let
     , ppHiddenNoWindows = id
     , ppUrgent = xmobarColor "orange" "black" . xmobarStrip
     , ppSep = " "
-    , ppTitle = xmobarColor "purple" "black" . xmobarStrip
+    , ppTitle = xmobarColor "#a020f0" "black" . xmobarStrip
     , ppLayout = workspacePP
     , ppOutput = hPutStrLn xmproc
     }
