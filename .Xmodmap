@@ -1,2 +1,2 @@
-add mod4 = Print
-keycode 197 = XF86KAudioPlay
+remove mod1 = Alt_R
+add mod4 = Alt_R

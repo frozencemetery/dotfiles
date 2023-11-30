@@ -1,3 +1,6 @@
+# this is because urxvt started drawing in the middle of the sreen
+clear || true
+
 # Lines configured by zsh-newuser-install
 HISTFILE=~/.histfile
 HISTSIZE=100000000000
@@ -39,7 +42,7 @@ preexec() {
     cmd_timestamp=$EPOCHSECONDS
 
     # set window title
-    printf "\033]2;$1\007"
+    printf "\033]2;%s\007" "$1"
 }
 
 precmd() {
@@ -53,10 +56,10 @@ precmd() {
     fi
 
     # trigger an alert
-#    printf "\a"
+    printf "\a"
 
     # set window title
-    printf "\033]2;zsh: ${PWD}\007"
+    printf "\033]2;zsh: %s\007" "${PWD}"
 }
 
 # welcome to my nightmare
@@ -107,6 +110,7 @@ alias man="man --nj"
 alias n="nice -n 19 make -sj12"
 alias m="mpv --ao=alsa --volume-max=1000"
 alias mq="m --quiet"
+alias mnv="m --no-video"
 
 alias vpn="tmux new-session sudo openvpn --config /etc/openvpn/client/rdu2"
 alias weechat="mosh -a ihatethat"

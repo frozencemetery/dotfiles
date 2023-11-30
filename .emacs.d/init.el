@@ -14,14 +14,15 @@
 (require 'auto-complete)
 (require 'notmuch)
 (require 'uniquify)
-(require 'elpy)
+; (require 'elpy)
 
-(elpy-enable)
+; (elpy-enable)
 
 ;; MODE ALIST ;;
 (add-to-list 'auto-mode-alist '("\\.md\\'" . markdown-mode))
 (add-to-list 'auto-mode-alist '("\\.pyx\\'" . python-mode)) ; cython
 (add-to-list 'auto-mode-alist '("\\.pxd\\'" . python-mode)) ; cython
+(add-to-list 'auto-mode-alist '("\\.ino\\'" . c++-mode)) ; Arduino
 (add-to-list 'auto-mode-alist '(".bash_aliases\\'" . sh-mode))
 (add-to-list 'auto-mode-alist '("rfc" . rfcview-mode) t)
 
@@ -259,6 +260,16 @@
  '(ruby-indent-level 4)
  '(safe-local-variable-values '((meson-indent-basic . 2)))
  '(vc-follow-symlinks nil)
+ '(warning-suppress-types
+   '((comp)
+     (comp)
+     (comp)
+     (comp)
+     (comp)
+     (comp)
+     (comp)
+     (comp)
+     (comp)))
  '(xref-prompt-for-identifier t)
  '(yaml-indent-offset 4))
 (custom-set-faces

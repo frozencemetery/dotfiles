@@ -189,3 +189,9 @@ def_key "u"
 
 def_key "R"
   toggle_consume
+
+def_key "\\"
+  pause
+
+def_key "|"
+  play
