@@ -48,7 +48,10 @@ fffix (inm, ins, ffm, ffs) = let
     \wset ->
       case W.peek wset of
         Nothing -> return False
-        Just w -> runQuery (className =? "Firefox") w
+        Just w -> do
+          lower <- runQuery (className =? "firefox") w
+          upper <- runQuery (className =? "Firefox") w
+          return $ lower || upper
     )
   ffev = onFirefox --> sendKey ffm ffs
   nfev = (fmap not onFirefox) --> sendKey inm ins
