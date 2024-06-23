@@ -21,7 +21,7 @@ spawnterm :: String -> X ()
 spawnterm c = spawn $ "urxvtcd -e " ++ c
 
 mpc :: String -> X ()
-mpc c = spawn $ "MPD_HOST=/run/mpd/socket mpc " ++ c
+mpc c = spawn $ "MPD_HOST=~/.mpd/socket mpc " ++ c
 
 dmenu :: String -> String -> X ()
 dmenu command prompt = let
