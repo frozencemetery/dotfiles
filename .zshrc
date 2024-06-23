@@ -70,7 +70,6 @@ PROMPT+="%(1j.%{$fg_bold[cyan]%}[%j]%{$reset_color%} .)" # jobs
 PROMPT+="(\${cmd_exec_time}) " # timing commands
 PROMPT+="%{$fg_bold[green]%}%n@%m%{$reset_color%}:" # user@host:
 PROMPT+="%{$fg_bold[blue]%}%~%{$reset_color%}" # path
-#PROMPT+="\$(am_git && echo ' <'\$(git status | head -n1 | awk '{print \$NF}')'>')"
 PROMPT+="%(!.#.%\\\\$) " # this is just for the dollar sign
 
 function y {
@@ -86,7 +85,6 @@ function u {
 }
 
 alias grep="grep --color=auto"
-alias igrep="grep -i --color=auto"
 alias egrep="grep -E --color=auto"
 alias ls="ls -hN --color=auto"
 alias ll="ls -alFhN"
@@ -99,30 +97,17 @@ alias p=python3
 alias t=torify
 alias e="emacsclient -nw -a emacs" # because it hates you that's why
 alias a="aptitude"
-alias i="firefox-esr --new-window"
 alias mv="mv -iv"
 alias cp="cp -iv"
 alias rm="rm -iv --one-file-system"
 alias mkdir="mkdir -v"
-alias into="ssh"
-alias dquilt="quilt --quiltrc=${HOME}/.quiltrc-dpkg"
 alias man="man --nj"
 alias n="nice -n 19 make -sj12"
-alias m="mpv --ao=alsa --volume-max=1000"
+alias m='mpv --volume-max=1000 --ytdl-raw-options=format=mp4+bestaudio/best'
 alias mq="m --quiet"
 alias mnv="m --no-video"
 
-alias vpn="tmux new-session sudo openvpn --config /etc/openvpn/client/rdu2"
-alias weechat="mosh -a ihatethat"
-alias w="mosh -a ihatethat"
-
 alias en="emacsclient -nw -e '(notmuch)'"
-
-function eh {
-    source ~/.venv/bin/activate
-    make_patches "$@"
-    deactivate
-}
 
 function g {
     if (am_git); then
@@ -152,10 +137,6 @@ function eg {
     done
 }
 
-function sw {
-    cd $(sw.py)
-}
-
 setopt COMPLETE_ALIASES
 
 # hook directory change to list files
@@ -181,8 +162,6 @@ if [ x$TERM == x"mlterm" ]; then
     TERM="mlterm-256color"
 fi
 
-# source /usr/share/zsh-autosuggestions/zsh-autosuggestions.zsh
-
 # must be last otherwise problems
 ZSH_HIGHLIGHT_HIGHLIGHTERS=(main brackets pattern)
 source /usr/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
@@ -192,17 +171,9 @@ export EDITOR="emacsclient -nw -a emacs"
 export PATH="$HOME/bin:$HOME/.cargo/bin:$HOME/eh:/usr/lib/ccache:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin"
 export MPD_HOST=~/.mpd/socket
 
-export DEBEMAIL="Robbie Harwood (frozencemetery) <rharwood@club.cc.cmu.edu>"
-
 export GTK_OVERLAY_SCROLLING=0
-
 export QT_STYLE_OVERRIDE=gtk2
 
 # Java is terrible
 export _JAVA_AWT_WM_NONREPARENTING=1
 export AWT_TOOLKIT=MToolkit
-
-if [ x$TERM == xlinux -a ! -f /tmp/x-attempted ]; then
-    touch /tmp/x-attempted
-    exec startx > .xserver.log 2>&1
-fi
