@@ -64,12 +64,12 @@
                  (lambda ()
                    (not (eq (get-text-property (point) 'face)
                             'font-lock-comment-face))))))
-(setq c-default-style "linux" c-basic-offset 4) ;; ~OTBS
-(add-hook 'c++-mode-hook
-          (lambda () (setq comment-start "/* " comment-end " */")))
 (setq-default indent-tabs-mode nil)
+(setq-default c-basic-offset 4)
 (setq-default tab-width 8)
 (setq-default fill-column 78)
+(add-hook 'c++-mode-hook
+          (lambda () (setq comment-start "/* " comment-end " */")))
 
 ;; use ctags, not etags
 (setq path-to-ctags "/usr/bin/ctags")
