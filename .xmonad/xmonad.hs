@@ -121,6 +121,7 @@ keymap conf@XConfig {XMonad.modMask = modm} = let
     , ("<XF86AudioRaiseVolume>", spawn "amixer set Master 3%+")
     , ("<XF86ScreenSaver>",      spawn "slock xset dpms force off")
     , ("<Pause>",                spawn "slock xset dpms force off")
+    , ("M-d",                    spawn "sleep 0.5; xset dpms force off")
 
     -- Apple Extended II, which has no Fn or multimedia keys
     , ("C-<F2>", spawn "amixer set Master 3%-")
@@ -206,7 +207,7 @@ main = do
         , manageHook = manip
         , startupHook = do
             spawnterm "zsh"
-            spawn "xmodmap .Xmodmap"
+--            spawn "xmodmap .Xmodmap"
             spawn "emacs --daemon"
             spawn "firefox"
             spawn "redshift"
