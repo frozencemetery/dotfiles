@@ -6,7 +6,7 @@ Config { font = "Terminus 8"
        , position = BottomW L 100
        , lowerOnStart = True
        , commands =
-         [ Run MultiCpu ["-t", "(<total0>, <total1>, <total2>, <total3>)",
+         [ Run MultiCpu ["-t", "(<total0>, <total1>, <total2>, <total3>, <total4>, <total5>, <total6>, <total7>, <total8>, <total9>, <total10>, <total11>, <total12>, <total13>)",
                          "-L", "25", "-H", "75", "--normal", "white",
                          "--high", "orange", "-m", "3", "-w", "3",
                          "-S", "true"] 10

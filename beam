@@ -33,11 +33,5 @@ def main(argv: List[str]) -> None:
         beam(bigs, littles)
     # Otherwise, make no changes to display state.
 
-    usbs = [l for l in cmd("lsusb") if "ADB Adapter" in l]
-    if len(usbs) > 0:
-        cmd("xmodmap ~/.Xmodmap.apple")
-    else:
-        cmd("xmodmap ~/.Xmodmap.std")
-
 if __name__ == "__main__":
     main(sys.argv)

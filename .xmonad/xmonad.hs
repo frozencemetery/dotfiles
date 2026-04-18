@@ -207,7 +207,6 @@ main = do
         , manageHook = manip
         , startupHook = do
             spawnterm "zsh"
---            spawn "xmodmap .Xmodmap"
             spawn "emacs --daemon"
             spawn "firefox"
             spawn "redshift"
