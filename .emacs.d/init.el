@@ -26,17 +26,17 @@
 (add-to-list 'auto-mode-alist '(".bash_aliases\\'" . sh-mode))
 (add-to-list 'auto-mode-alist '("rfc" . rfcview-mode) t)
 
-;; AC
-(ac-config-default)
-;; dirty fix for having AC everywhere
-(define-globalized-minor-mode real-global-auto-complete-mode
-  auto-complete-mode (lambda ()
-                       (if (not (minibufferp (current-buffer)))
-                           (auto-complete-mode 1))))
-(real-global-auto-complete-mode t)
-(ac-flyspell-workaround)
-(define-key ac-complete-mode-map "\t" 'ac-complete)
-(define-key ac-complete-mode-map "\r" nil)
+;; ;; AC - broken since emacs 30
+;; (ac-config-default)
+;; ;; dirty fix for having AC everywhere
+;; (define-globalized-minor-mode real-global-auto-complete-mode
+;;   auto-complete-mode (lambda ()
+;;                        (if (not (minibufferp (current-buffer)))
+;;                            (auto-complete-mode 1))))
+;; (real-global-auto-complete-mode t)
+;; (ac-flyspell-workaround)
+;; (define-key ac-complete-mode-map "\t" 'ac-complete)
+;; (define-key ac-complete-mode-map "\r" nil)
 
 ;; org
 (global-set-key "\C-cl" 'org-store-link)
