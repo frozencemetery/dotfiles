@@ -73,10 +73,10 @@ PROMPT+="%{$fg_bold[blue]%}%~%{$reset_color%}" # path
 PROMPT+="%(!.#.%\\\\$) " # this is just for the dollar sign
 
 function y {
-    yt-dlp -f 'bestvideo[height<=1080][width<=1920]+bestaudio/best' "$@"
+    yt-dlp -t sleep -f 'bestvideo[height<=1080][width<=1920]+bestaudio/best' "$@"
 }
 function ya {
-    yt-dlp -x -f 'vorbis/best[asr=44100]/best' "$@"
+    yt-dlp -t sleep -x -f 'vorbis/best[asr=44100]/best' "$@"
 }
 
 function u {
@@ -103,7 +103,7 @@ alias rm="rm -iv --one-file-system"
 alias mkdir="mkdir -v"
 alias man="man --nj"
 alias n="nice -n 19 make -sj12"
-alias m='mpv --volume-max=1000 --ytdl-raw-options=format=mp4+bestaudio/best'
+alias m='mpv --volume-max=1000 "--ytdl-raw-options=format=bestvideo[height<=1080]+bestaudio/best,preset-alias=sleep"'
 alias mq="m --quiet"
 alias mnv="m --no-video"
 
@@ -177,3 +177,6 @@ export QT_STYLE_OVERRIDE=gtk2
 # Java is terrible
 export _JAVA_AWT_WM_NONREPARENTING=1
 export AWT_TOOLKIT=MToolkit
+
+# https://bugzilla.mozilla.org/show_bug.cgi?id=1207700
+#export MOZ_USE_XINPUT2=1
